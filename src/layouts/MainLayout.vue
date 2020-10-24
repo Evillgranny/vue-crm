@@ -24,12 +24,25 @@
 <script>
 import Navbar from "@/components/app/Navbar";
 import Sidebar from "@/components/app/Sidebar";
+import messages from "@/utils/messages";
+
 export default {
   components: { Navbar, Sidebar },
   data: () => ({
     isOpen: true,
     loading: true
   }),
+  computed: {
+    error() {
+      return this.$store.getters.error
+    }
+  },
+  watch: {
+    error(fbError) {
+      console.log(fbError)
+      this.$error(messages[fbError.code] || 'Что-то пошло не так')
+    }
+  },
   async mounted() {
     if (!Object.keys(this.$store.getters.info).length) {
       await this.$store.dispatch('fetchInfo')
