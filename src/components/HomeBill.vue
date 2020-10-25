@@ -2,7 +2,7 @@
   <div class="col s12 m6 l4">
     <div class="card light-blue bill-card">
       <div class="card-content white-text">
-        <span class="card-title">Счет в валюте</span>
+        <span class="card-title"> {{ 'AccountInTheCurrency' | localize }} </span>
 
         <p
             v-for="cur of currencies"
@@ -35,7 +35,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

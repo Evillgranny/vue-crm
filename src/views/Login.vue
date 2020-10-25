@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="submitHandler" class="card auth-card">
     <div class="card-content">
-      <span class="card-title">Домашняя бухгалтерия</span>
+      <span class="card-title">{{ 'HomeBookkeeping' | localize }}</span>
       <div class="input-field">
         <input
             id="email"
@@ -10,8 +10,12 @@
             :class="{invalid: ($v.email.$dirty && !$v.email.required || $v.email.$dirty && !$v.email.email)}"
         >
         <label for="email">Email</label>
-        <small class="helper-text invalid" v-if="$v.email.$dirty && !$v.email.required">Поле email не должно быть пустым</small>
-        <small class="helper-text invalid" v-else-if="$v.email.$dirty && !$v.email.email">Введите корректный email</small>
+        <small class="helper-text invalid" v-if="$v.email.$dirty && !$v.email.required">
+          {{ 'emptyEmail' | localize }}
+        </small>
+        <small class="helper-text invalid" v-else-if="$v.email.$dirty && !$v.email.email">
+          {{ 'EnterCorrectEmail' | localize }}
+        </small>
       </div>
       <div class="input-field">
         <input
@@ -20,16 +24,16 @@
             v-model.trim="password"
             :class="{invalid: ($v.password.$dirty && !$v.password.required || $v.password.$dirty && !$v.password.minLength)}"
         >
-        <label for="password">Пароль</label>
+        <label for="password">{{ 'Password' | localize }}</label>
         <small
             class="helper-text invalid"
             v-if="$v.password.$dirty && !$v.password.required">
-          Введите пароль
+          {{ 'EnterPassword' | localize }}
         </small>
         <small
             class="helper-text invalid"
             v-else-if="$v.password.$dirty && !$v.password.minLength">
-          Пароль должен быть {{ $v.password.$params.minLength.min }} символов. Сейчас он {{password.length}}
+          {{'ThePasswordMustBe' | localize }} {{ ' ' }}{{ $v.password.$params.minLength.min }} {{ ' ' }} {{'ThePasswordMustBe2' | localize }}{{password.length}}
         </small>
       </div>
     </div>
@@ -39,14 +43,14 @@
             class="btn waves-effect waves-light auth-submit"
             type="submit"
         >
-          Войти
+          {{ 'Enter' | localize }}
           <i class="material-icons right">send</i>
         </button>
       </div>
 
       <p class="center">
-        Нет аккаунта?
-        <router-link to="/register">Зарегистрироваться</router-link>
+        {{ 'NoAccount' | localize }}
+        <router-link to="/register">{{ 'Register' | localize }}</router-link>
       </p>
     </div>
   </form>
@@ -56,6 +60,11 @@
 import { email, required, minLength } from 'vuelidate/lib/validators'
 import messages from "@/utils/messages";
 export default {
+  metaInfo() {
+    return {
+      title: 'Login'
+    }
+  },
   data: () => ({
     email: '',
     password: ''

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="page-title">
-      <h3>История записей</h3>
+      <h3>{{ 'RecordHistory' | localize }}</h3>
     </div>
 
     <div class="history-chart">
@@ -26,8 +26,8 @@
           v-model="page"
           :page-count="pageCount"
           :click-handler="pageChangeHandler"
-          :prev-text="'Назад'"
-          :next-text="'Вперёд'"
+          :prev-text="localizeFilter('Prev')"
+          :next-text="localizeFilter('Next')"
           :container-class="'pagination'"
           :page-class="'waves-effect'"
       />
@@ -39,8 +39,14 @@
 import paginationMixin from '@/mixins/pagination.mixin'
 import HistoryTable from '@/components/HistoryTable'
 import { Pie } from 'vue-chartjs'
+import localizeFilter from "@/filters/localize.filter";
 
 export default {
+  metaInfo() {
+    return {
+      title: this.$title('Menu_History')
+    }
+  },
   name: "History",
   extends: Pie,
   mixins: [paginationMixin],
@@ -48,6 +54,7 @@ export default {
   data: () => ({
     loading: true,
     records: [],
+    localizeFilter
   }),
   async mounted () {
     this.records = await this.$store.dispatch('fetchRecords')
@@ -64,7 +71,7 @@ export default {
           ...record,
           categoryName: categories.find(c => c.id === record.categoryId).title,
           typeClass: record.type === 'income' ? 'green' : 'red',
-          typeText: record.type === 'income' ? 'Доход' : 'Расход'
+          typeText: record.type === 'income' ? localizeFilter('Income') : localizeFilter('Outcome')
         }
       }))
 
@@ -103,7 +110,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

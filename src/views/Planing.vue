@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="page-title">
-      <h3>Планирование</h3>
+      <h3>{{ 'Menu_Planing' | localize}}</h3>
       <h4>{{ info.bill | currency('RUB') }}</h4>
     </div>
 
     <Loader v-if="loading" />
 
     <p v-else-if="!categories.length" class="center">
-      Категорий пока нет <router-link to="/categories">Добавинть новую категорию</router-link>
+      {{ 'NoСategoriesYet' | localize }} <router-link to="/categories"> {{ 'addNewCategory' | localize }}</router-link>
     </p>
 
     <section v-else>
@@ -32,8 +32,14 @@
 <script>
 import { mapGetters } from 'vuex'
 import currencyFilter from "@/filters/currency.filter"
+import localizeFilter from "@/filters/localize.filter";
 
 export default {
+  metaInfo() {
+    return {
+      title: this.$title('Menu_Planing')
+    }
+  },
   name: "Planing",
   data: () => ({
     loading: true,
@@ -64,7 +70,7 @@ export default {
           : 'red'
 
       const tooltipValue = cat.limit - spend
-      const tooltip = `${tooltipValue < 0 ? 'Превышение на ': 'Осталось '} ${currencyFilter(Math.abs(tooltipValue))}`
+      const tooltip = `${tooltipValue < 0 ? localizeFilter('ExceedingBy') : localizeFilter('Left')} ${currencyFilter(Math.abs(tooltipValue))}`
 
       return {
         ...cat,

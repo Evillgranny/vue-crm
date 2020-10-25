@@ -4,7 +4,7 @@
     <div  v-else class="app-main-layout">
       <Navbar @click="isOpen = !isOpen" />
 
-      <Sidebar v-model="isOpen" />
+      <Sidebar v-model="isOpen" :key="locale" />
 
       <main class="app-content" :class="{full: !isOpen}">
         <div class="app-page">
@@ -25,6 +25,7 @@
 import Navbar from "@/components/app/Navbar";
 import Sidebar from "@/components/app/Sidebar";
 import messages from "@/utils/messages";
+import localizeFilter from "@/filters/localize.filter";
 
 export default {
   components: { Navbar, Sidebar },
@@ -35,12 +36,15 @@ export default {
   computed: {
     error() {
       return this.$store.getters.error
-    }
+    },
+    locale() {
+      return this.$store.getters.info.locale
+    },
   },
   watch: {
     error(fbError) {
       console.log(fbError)
-      this.$error(messages[fbError.code] || 'Что-то пошло не так')
+      this.$error(messages[fbError.code] || localizeFilter('Oops'))
     }
   },
   async mounted() {
@@ -52,7 +56,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

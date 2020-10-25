@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="page-title">
-      <h3>Категории</h3>
+      <h3>{{ 'Categories' | localize }}</h3>
     </div>
     <section>
       <Loader v-if="loading" />
@@ -17,7 +17,7 @@
         />
 
         <p v-else class="center">
-          Категорий пока нет
+          {{ 'NoСategoriesYet' | localize }}
         </p>
       </div>
     </section>
@@ -28,6 +28,11 @@
 import CategoryCreate from "@/components/CategoryCreate";
 import CategoryEdit from "@/components/CategoryEdit";
 export default {
+  metaInfo() {
+    return {
+      title: this.$title('Menu_Categories')
+    }
+  },
   components: {CategoryEdit, CategoryCreate},
   data: () => ({
     categories: [],
